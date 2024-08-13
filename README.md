@@ -3,7 +3,8 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 ![login-light](https://github.com/user-attachments/assets/a0fc13b1-68fd-4b28-a5dc-f53d37624fd9)   ![login-dark](https://github.com/user-attachments/assets/eace7629-9013-47c5-acfc-adeab0cb2c54)
 ![home-dark](https://github.com/user-attachments/assets/66e193ff-ac72-4b27-9fd4-ea9ad7d3cede) ![home-light](https://github.com/user-attachments/assets/2b49a8da-77ef-4612-9514-8152c7a75bef)
-![details](https://github.com/user-attachments/assets/a5d951f8-165b-4706-abd6-d270843bfd8d)
+![details](https://github.com/user-attachments/assets/199e0980-642b-480c-bf9c-f4af42a22618)
+
 
 
 
