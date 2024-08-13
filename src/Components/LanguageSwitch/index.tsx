@@ -9,7 +9,7 @@ import {toggleLanguage} from '../../Utils';
 const LanguageSwitch = () => {
   const {colors} = useTheme();
   const {container, btntext} = styles(colors);
-  console.log(i18n);
+
   return (
     <TouchableOpacity style={[container]} onPress={toggleLanguage}>
       <Text style={[TextStyles.btnTitle, btntext]}>
