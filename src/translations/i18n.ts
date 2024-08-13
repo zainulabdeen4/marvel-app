@@ -5,6 +5,7 @@ import ar from './ar.json';
 import * as RNLocalize from 'react-native-localize';
 i18n.use(initReactI18next).init({
   // lng: RNLocalize.getLocales()[0].languageTag,
+  compatibilityJSON: 'v3',
   lng: 'en',
   fallbackLng: 'en',
   resources: {
