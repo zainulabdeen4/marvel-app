@@ -70,10 +70,16 @@ const toggleLanguage = () => {
   i18n.changeLanguage(i18n.resolvedLanguage === 'ar' ? 'en' : 'ar');
 };
 
+const getApiKey = () => {
+  const ts = Date.now();
+  return `?ts=${ts}&apikey=${Config.PUBLIC_API_KEY}&hash=${createHash(ts)}`;
+};
+
 export {
   showErrorMessage,
   createHash,
   pathReplace,
   handleApiError,
   toggleLanguage,
+  getApiKey,
 };

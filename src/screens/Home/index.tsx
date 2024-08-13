@@ -22,6 +22,12 @@ import {
   EmptyListComponent,
   TextField,
 } from '../../Components';
+import Animated, {
+  useAnimatedScrollHandler,
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from 'react-native-reanimated';
 
 const ListEmptyComponent = () => <EmptyListComponent />;
 
@@ -29,11 +35,54 @@ const Home = ({navigation}) => {
   const [page, setPage] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const {colors} = useTheme();
-  const {container, contentContainerStyle, columnWrapperStyle, listStyle} =
-    styles(colors);
+
   const {characters, apiError, apiErrorMessage} = useSelector(
     (state: RootState) => state.characterData,
   );
+  const scrollY = useSharedValue(0);
+  const previousScrollY = useSharedValue(0);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: event => {
+      const currentY = event.contentOffset.y;
+
+      if (currentY < previousScrollY.value) {
+        // User is scrolling up
+        scrollY.value = 0; // Show the search bar
+      } else if (currentY > previousScrollY.value) {
+        // User is scrolling down
+        scrollY.value = currentY;
+      }
+
+      previousScrollY.value = currentY;
+    },
+  });
+
+  const searchBarStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: withTiming(scrollY.value > 50 ? -100 : 0, {
+            duration: 300,
+          }),
+        },
+      ],
+      opacity: withTiming(scrollY.value > 50 ? 0 : 1, {duration: 300}),
+    };
+  });
+  const animatedListStyle = useAnimatedStyle(() => {
+    return {
+      marginTop: withTiming(scrollY.value > 50 ? -50 : 0, {duration: 100}),
+    };
+  });
+  const {
+    container,
+    contentContainerStyle,
+    columnWrapperStyle,
+    listStyle,
+    searchContainer,
+    overrideTextFieldStyle,
+  } = styles(colors);
   const {count} = useSelector((state: RootState) => state.characterData);
   const loader = useSelector((state: RootState) => state.loaderData.loader);
   const dispatch = useDispatch();
@@ -49,13 +98,16 @@ const Home = ({navigation}) => {
     fetchData(true);
   };
   const listHeaderComponent = () => (
-    <TextField
-      placeholder="Search Characters"
-      canCancel
-      value={searchQuery}
-      onChangeText={(t: string) => setSearchQuery(t)}
-      pressCancel={clearSearch}
-    />
+    <Animated.View style={[searchBarStyle, searchContainer]}>
+      <TextField
+        placeholder="Search Characters"
+        canCancel
+        value={searchQuery}
+        onChangeText={(t: string) => setSearchQuery(t)}
+        pressCancel={clearSearch}
+        overrideContainerStyle={overrideTextFieldStyle}
+      />
+    </Animated.View>
   );
   const onErrorRetry = () => {
     if (searchQuery !== '') {
@@ -86,14 +138,16 @@ const Home = ({navigation}) => {
     />
   ) : (
     <View style={container}>
-      <FlatList
+      {listHeaderComponent()}
+      <Animated.FlatList
+        showsVerticalScrollIndicator={false}
         removeClippedSubviews={false}
-        ListHeaderComponent={listHeaderComponent()}
+        // ListHeaderComponent={listHeaderComponent()}
         data={characters}
         numColumns={2}
         columnWrapperStyle={columnWrapperStyle}
         contentContainerStyle={contentContainerStyle}
-        style={listStyle}
+        style={[listStyle, animatedListStyle]}
         renderItem={({item}) => (
           <CharacterListItem
             item={item}
@@ -103,10 +157,9 @@ const Home = ({navigation}) => {
             }}
           />
         )}
-        pagingEnabled={true}
         keyExtractor={item => item.id.toString()}
         onEndReached={() => {
-          if (count !== 0 && count === 20) {
+          if (count !== 0 && count === 30) {
             fetchData();
           }
         }}
@@ -117,6 +170,8 @@ const Home = ({navigation}) => {
           />
         }
         ListEmptyComponent={loader ? null : ListEmptyComponent}
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
       />
     </View>
   );

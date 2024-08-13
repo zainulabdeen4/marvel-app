@@ -26,9 +26,17 @@ export default (colors: any) =>
     },
     contentContainerStyle: {
       width: '100%',
-      paddingHorizontal: scale(5),
-      paddingVertical: verticalScale(10),
+      paddingHorizontal: scale(8),
+      paddingBottom: verticalScale(10),
     },
     columnWrapperStyle: {justifyContent: 'space-between'},
     listStyle: {width: '100%'},
+    searchContainer: {
+      width: '100%',
+      paddingHorizontal: verticalScale(8),
+      marginTop: verticalScale(10),
+    },
+    overrideTextFieldStyle: {
+      marginBottom: verticalScale(10),
+    },
   });

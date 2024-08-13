@@ -1,10 +1,9 @@
-import Config from 'react-native-config';
 import {api} from '../../Api';
 import endpoints from '../../Api/endpoints';
 // import {showErrorMessage} from '../../Utils';
 import {AppDispatch} from '../store';
 import loaderActions from './loaderActions';
-import {createHash} from '../../Utils';
+import {getApiKey} from '../../Utils';
 
 enum characterActions {
   SAVE_CHARACTER_DATA = 'SAVE_CHARACTER_DATA',
@@ -22,14 +21,10 @@ function fetchCharacters(page: number = 0, search: string | null) {
     try {
       dispatch({type: characterActions.CLEAR_API_ERROR});
       dispatch({type: loaderActions.ENABLE_LOADER});
-      const limit = 20;
-      const ts = Date.now();
+      const limit = 30;
       const offset = page * limit;
       let url =
-        endpoints.characters +
-        `?ts=${ts}&apikey=${Config.PUBLIC_API_KEY}&hash=${createHash(
-          ts,
-        )}&limit=${limit}&offset=${offset}`;
+        endpoints.characters + `${getApiKey()}&limit=${limit}&offset=${offset}`;
       if (search) {
         url += `&nameStartsWith=${search}`;
       }
@@ -53,12 +48,8 @@ function fetchCharactersDetails(characterId: number) {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch({type: characterActions.CLEAR_API_ERROR});
-      const ts = Date.now();
-      let url =
-        endpoints.characters +
-        `/${characterId}?ts=${ts}&apikey=${
-          Config.PUBLIC_API_KEY
-        }&hash=${createHash(ts)}`;
+
+      let url = endpoints.characters + `/${characterId}${getApiKey()}`;
 
       dispatch({type: characterActions.ENABLE_LOADER_CHARACTER});
       const res = await api(url, null);
@@ -73,7 +64,6 @@ function fetchCharactersDetails(characterId: number) {
     } catch (e: any) {
       dispatch({type: characterActions.DISABLE_LOADER_CHARACTER});
       dispatch({type: characterActions.HANDLE_API_ERROR, payload: e});
-      // showErrorMessage(e.data.message);
     }
   };
 }

@@ -1,10 +1,12 @@
 import {
   Image,
   Pressable,
+  StyleProp,
   Text,
   TextInput,
   TextInputProps,
   View,
+  ViewStyle,
 } from 'react-native';
 import React, {useState} from 'react';
 import styles from './styles';
@@ -15,6 +17,7 @@ interface inputProps extends TextInputProps {
   errorText?: String;
   canCancel?: boolean;
   pressCancel?: () => void;
+  overrideContainerStyle: StyleProp<ViewStyle>;
 }
 export default ({
   placeholder,
@@ -23,6 +26,7 @@ export default ({
   onChangeText,
   canCancel = false,
   value,
+  overrideContainerStyle,
   pressCancel,
 }: inputProps) => {
   const {colors, dark} = useTheme();
@@ -30,7 +34,7 @@ export default ({
     styles(colors, dark);
   const [secureText, setSecureText] = useState(secureTextEntry);
   return (
-    <View style={mainContainer}>
+    <View style={[mainContainer, overrideContainerStyle]}>
       <View style={container}>
         <TextInput
           placeholder={placeholder}
