@@ -14,6 +14,6 @@ export default (colors: any) =>
       marginTop: verticalScale(10),
     },
     btntext: {
-      color: colors.text,
+      color: '#fff',
     },
   });

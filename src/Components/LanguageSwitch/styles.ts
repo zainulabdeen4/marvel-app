@@ -12,7 +12,7 @@ export default (colors: any) =>
       marginHorizontal: scale(10),
     },
     btntext: {
-      color: colors.text,
+      color: '#fff',
       alignSelf: 'center',
     },
   });
