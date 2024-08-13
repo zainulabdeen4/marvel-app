@@ -1,4 +1,8 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+#ScreenShots
+![Simulator Screenshot - iPhone 15 Pro Max - 2024-08-13 at 15 51 13](https://github.com/user-attachments/assets/c7ccf1df-34a3-4b37-9580-42b3aaaec86c)
+![Simulator Screenshot - iPhone 15 Pro Max - 2024-08-13 at 15 51 17](https://github.com/user-attachments/assets/c56bbb22-0689-4634-a52d-32c5ea5d3258)
+
 
 # Getting Started
 
