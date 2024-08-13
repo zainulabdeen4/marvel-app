@@ -2,7 +2,7 @@ import Snackbar from 'react-native-snackbar';
 import CryptoJS from 'crypto-js';
 import Config from 'react-native-config';
 import i18n from '../translations/i18n';
-import {I18nManager} from 'react-native';
+
 const showErrorMessage = (message: string = 'Something Went Wrong') => {
   Snackbar.show({
     text: message,
