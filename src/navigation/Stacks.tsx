@@ -85,6 +85,7 @@ const MainStack = ({toggleTheme}: stackType) => {
       screenOptions={{
         headerRight: renderHeaderRight,
         headerTitle: renderLogo,
+        headerTitleAlign: 'center',
         headerBackTitleVisible: false,
         headerTintColor: '#fff',
       }}>

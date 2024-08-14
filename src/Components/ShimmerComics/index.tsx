@@ -14,8 +14,12 @@ const ShimmerComics = () => {
 
   return (
     <View style={container}>
-      <ShimmerPlaceHolder shimmerColors={shimmerColors} style={circle} />
-      <ShimmerPlaceHolder shimmerColors={shimmerColors} />
+      <ShimmerPlaceHolder
+        shimmerColors={shimmerColors}
+        location={[0.3, 0.5]}
+        style={circle}
+      />
+      <ShimmerPlaceHolder shimmerColors={shimmerColors} location={[0.3, 0.5]} />
     </View>
   );
 };
