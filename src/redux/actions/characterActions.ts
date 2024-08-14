@@ -5,21 +5,21 @@ import {AppDispatch} from '../store';
 import loaderActions from './loaderActions';
 import {getApiKey} from '../../Utils';
 
+import {errorActions} from '../ErrorReducer';
+
 enum characterActions {
   SAVE_CHARACTER_DATA = 'SAVE_CHARACTER_DATA',
   SAVE_CHARACTER_DETAIL = 'SAVE_CHARACTER_DETAIL',
   CLEAR_CHARACTER_DETAIL = 'CLEAR_CHARACTER_DETAIL',
   ENABLE_LOADER_CHARACTER = 'ENABLE_LOADER_CHARACTER',
   DISABLE_LOADER_CHARACTER = 'DISABLE_LOADER_CHARACTER',
-  HANDLE_API_ERROR = 'HANDLE_API_ERROR',
-  CLEAR_API_ERROR = 'CLEAR_API_ERROR',
   LOGOUT = 'LOGOUT',
 }
 
 function fetchCharacters(page: number = 0, search: string | null) {
   return async (dispatch: AppDispatch) => {
     try {
-      dispatch({type: characterActions.CLEAR_API_ERROR});
+      dispatch({type: errorActions.HIDE_ERROR});
       dispatch({type: loaderActions.ENABLE_LOADER});
       const limit = 30;
       const offset = page * limit;
@@ -39,7 +39,13 @@ function fetchCharacters(page: number = 0, search: string | null) {
       }
     } catch (e: any) {
       dispatch({type: loaderActions.DISABLE_LOADER});
-      dispatch({type: characterActions.HANDLE_API_ERROR, payload: e});
+      dispatch({
+        type: errorActions.SHOW_ERROR,
+        payload: {
+          errorData: e,
+          retryAction: () => dispatch(fetchCharacters(page, search)),
+        },
+      });
     }
   };
 }
@@ -47,8 +53,7 @@ function fetchCharacters(page: number = 0, search: string | null) {
 function fetchCharactersDetails(characterId: number) {
   return async (dispatch: AppDispatch) => {
     try {
-      dispatch({type: characterActions.CLEAR_API_ERROR});
-
+      dispatch({type: errorActions.HIDE_ERROR});
       let url = endpoints.characters + `/${characterId}${getApiKey()}`;
 
       dispatch({type: characterActions.ENABLE_LOADER_CHARACTER});
@@ -63,7 +68,13 @@ function fetchCharactersDetails(characterId: number) {
       }
     } catch (e: any) {
       dispatch({type: characterActions.DISABLE_LOADER_CHARACTER});
-      dispatch({type: characterActions.HANDLE_API_ERROR, payload: e});
+      dispatch({
+        type: errorActions.SHOW_ERROR,
+        payload: {
+          errorData: e,
+          retryAction: () => dispatch(fetchCharactersDetails(characterId)),
+        },
+      });
     }
   };
 }

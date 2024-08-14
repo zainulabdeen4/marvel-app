@@ -1,4 +1,3 @@
-import {handleApiError} from '../Utils';
 import {characterActions} from './actions/characterActions';
 interface userInitialType {
   characters: any;
@@ -7,8 +6,6 @@ interface userInitialType {
   offset: number;
   characterDetail: any;
   loader: boolean;
-  apiErrorMessage: string;
-  apiError: any;
 }
 const initialState: userInitialType = {
   characters: [],
@@ -17,8 +14,6 @@ const initialState: userInitialType = {
   offset: 0,
   characterDetail: null,
   loader: false,
-  apiErrorMessage: '',
-  apiError: null,
 };
 
 interface characterActionType {
@@ -76,20 +71,7 @@ const CharacterReducer = (
         characterDetail: null,
       };
     }
-    case characterActions.HANDLE_API_ERROR: {
-      return {
-        ...state,
-        apiError: {...action.payload},
-        apiErrorMessage: handleApiError(action.payload),
-      };
-    }
-    case characterActions.CLEAR_API_ERROR: {
-      return {
-        ...state,
-        apiError: null,
-        apiErrorMessage: null,
-      };
-    }
+
     case characterActions.LOGOUT:
       return initialState;
 

@@ -7,11 +7,13 @@ import LoaderReducer from './LoaderReducer';
 import UserReducer from './UserReducer';
 import {thunk} from 'redux-thunk';
 import CharacterReducer from './CharacterReducer';
+import ErrorReducer from './ErrorReducer';
 
 const state = combineReducers({
   userData: UserReducer,
   loaderData: LoaderReducer,
   characterData: CharacterReducer,
+  ErrorReducer: ErrorReducer,
 });
 export const store = createStore(state, applyMiddleware(thunk));
 

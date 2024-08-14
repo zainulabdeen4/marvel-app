@@ -10,6 +10,7 @@ export default (colors: any) =>
       width: '100%',
       alignItems: 'center',
       paddingHorizontal: '5%',
+      backgroundColor: colors.background,
     },
     logoStyle: {
       width: '60%',

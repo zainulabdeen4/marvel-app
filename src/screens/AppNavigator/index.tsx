@@ -5,10 +5,13 @@ import {DarkTheme, LightTheme} from '../../themes/themes';
 import {AuthStack, MainStack} from '../../navigation/Stacks';
 import {RootState} from '../../redux/store';
 import {useSelector} from 'react-redux';
-import {LoaderView} from '../../Components';
+import {ErrorModal, LoaderView} from '../../Components';
+import {useColorScheme} from 'react-native';
 
 const AppNavigator = () => {
-  const [isDarkTheme, setIsDarkTheme] = useState(true);
+  const [isDarkTheme, setIsDarkTheme] = useState(
+    useColorScheme() === 'dark' ? true : false,
+  );
 
   const toggleTheme = () => {
     setIsDarkTheme(!isDarkTheme);
@@ -23,6 +26,7 @@ const AppNavigator = () => {
         <MainStack toggleTheme={toggleTheme} />
       )}
       <LoaderView />
+      <ErrorModal />
     </NavigationContainer>
   );
 };

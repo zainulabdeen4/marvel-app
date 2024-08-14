@@ -7,7 +7,6 @@ export enum ApiType {
   PUT = 'PUT',
   DELETE = 'DELETE',
 }
-
 async function api(path: String, data: any, method: ApiType = ApiType.GET) {
   let baseUrl = 'https://dummyjson.com/auth/';
   let url = baseUrl + path;
@@ -41,6 +40,15 @@ async function api(path: String, data: any, method: ApiType = ApiType.GET) {
               ? error.response.data.code
               : 0,
           status: error.response.status,
+        });
+      } else if (error.request) {
+        return Promise.reject({
+          data: error?.request._response ?? '',
+        });
+      } else {
+        return Promise.reject({
+          data: {message: 'Something Went Wrong'},
+          status: 0,
         });
       }
     });

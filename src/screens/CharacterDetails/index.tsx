@@ -14,7 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {pathReplace} from '../../Utils';
 import {RootState} from '../../redux/store';
 import Animated, {Easing, FadeIn} from 'react-native-reanimated';
-import {ShimmerComics, ApiError} from '../../Components';
+import {ShimmerComics} from '../../Components';
 
 const CharacterDetails = ({route}) => {
   const {colors} = useTheme();
@@ -33,25 +33,20 @@ const CharacterDetails = ({route}) => {
     CoverContainer,
   } = styles(colors);
   const dispatch = useDispatch();
-  const {characterDetail, loader, apiError, apiErrorMessage} = useSelector(
+
+  const {loader, characterDetail} = useSelector(
     (state: RootState) => state.characterData,
   );
 
   const fetchDetails = useCallback(() => {
     dispatch(fetchCharactersDetails(character.id));
   }, [character.id, dispatch]);
+
   useEffect(() => {
     fetchDetails();
-  }, [fetchDetails]);
+  }, []);
 
-  return apiError ? (
-    <ApiError
-      errorMessage={apiErrorMessage}
-      showLogout
-      showRetry
-      retry={fetchDetails}
-    />
-  ) : (
+  return (
     <ScrollView
       contentContainerStyle={container}
       showsVerticalScrollIndicator={false}>
@@ -85,7 +80,7 @@ const CharacterDetails = ({route}) => {
         {characterDetail && (
           <View>
             {characterDetail?.comics?.available > 0 &&
-              characterDetail.comics.items.map(item => {
+              characterDetail.comics.items.map((item: any) => {
                 return (
                   <View style={comicsRow}>
                     <View style={bulletPoint} />

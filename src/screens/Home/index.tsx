@@ -7,9 +7,8 @@
 
 import React, {useCallback, useEffect, useState} from 'react';
 import {useTheme} from '@react-navigation/native';
-import {FlatList, RefreshControl, View} from 'react-native';
+import {RefreshControl, View} from 'react-native';
 import styles from './styles';
-// import {createHash} from '../../Utils';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux/store';
 import {
@@ -17,7 +16,6 @@ import {
   fetchCharacters,
 } from '../../redux/actions/characterActions';
 import {
-  ApiError,
   CharacterListItem,
   EmptyListComponent,
   TextField,
@@ -36,9 +34,7 @@ const Home = ({navigation}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const {colors} = useTheme();
 
-  const {characters, apiError, apiErrorMessage} = useSelector(
-    (state: RootState) => state.characterData,
-  );
+  const {characters} = useSelector((state: RootState) => state.characterData);
   const scrollY = useSharedValue(0);
   const previousScrollY = useSharedValue(0);
 
@@ -109,13 +105,7 @@ const Home = ({navigation}) => {
       />
     </Animated.View>
   );
-  const onErrorRetry = () => {
-    if (searchQuery !== '') {
-      fetchData(false, true);
-    } else {
-      fetchData();
-    }
-  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -129,20 +119,12 @@ const Home = ({navigation}) => {
     }
   }, [searchQuery, fetchData]);
 
-  return apiError ? (
-    <ApiError
-      errorMessage={apiErrorMessage}
-      showLogout
-      showRetry
-      retry={onErrorRetry}
-    />
-  ) : (
+  return (
     <View style={container}>
       {listHeaderComponent()}
       <Animated.FlatList
         showsVerticalScrollIndicator={false}
         removeClippedSubviews={false}
-        // ListHeaderComponent={listHeaderComponent()}
         data={characters}
         numColumns={2}
         columnWrapperStyle={columnWrapperStyle}
